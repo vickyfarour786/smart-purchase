@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMART PURCHASE</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #111827, #2563eb);
+      color: white;
+      padding: 22px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .tagline {
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    .hero {
+      padding: 45px 6%;
+      text-align: center;
+      background: white;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #666;
+      font-size: 17px;
+    }
+
+    .controls {
+      padding: 25px 6%;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    input, select, button {
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 15px;
+    }
+
+    input {
+      min-width: 260px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .admin {
+      background: #111827;
+      color: white;
+      padding: 18px 6%;
+      text-align: center;
+    }
+
+    .admin button {
+      background: #22c55e;
+    }
+
+    .products {
+      padding: 20px 6% 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      transition: .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .card-content {
+      padding: 17px;
+    }
+
+    .category {
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .card h3 {
+      margin: 8px 0;
+      font-size: 18px;
+    }
+
+    .price {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .old-price {
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    .new-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: #16a34a;
+    }
+
+    .profit {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .buy {
+      width: 100%;
+      background: #ff6b00;
+    }
+
+    .edit {
+      width: 100%;
+      background: #64748b;
+      margin-top: 7px;
+      display: none;
+    }
+
+    .admin-mode .edit {
+      display: block;
+    }
+
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 25px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .modal-box {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      padding: 25px;
+      border-radius: 15px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 15px;
+    }
+
+    .modal-box input,
+    .modal-box select {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .close {
+      background: #dc2626;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="logo">SMART PURCHASE</div>
+    <div class="tagline">Smart finds. Better choices.</div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Smart Purchase</h1>
+  <p>Discover useful products from trusted marketplaces.</p>
+</section>
+
+<div class="controls">
+  <input
+    type="text"
+    id="search"
+    placeholder="Search products..."
+    oninput="renderProducts()"
+  />
+
+  <select id="category" onchange="renderProducts()">
+    <option value="all">All Categories</option>
+    <option value="Fashion">Fashion</option>
+    <option value="Home">Home & Kitchen</option>
+    <option value="Beauty">Beauty</option>
+    <option value="Bags">Bags & Accessories</option>
+    <option value="Kids">Kids & Toys</option>
+    <option value="Fitness">Fitness</option>
+    <option value="Gifts">Gifts</option>
+  </select>
+</div>
+
+<div class="admin">
+  <span>Owner controls: </span>
+  <button onclick="toggleAdmin()">Admin Mode</button>
+  <button onclick="openAdd()">+ Add Product</button>
+</div>
+
+<section class="products" id="products"></section>
+
+<footer>
+  © 2026 SMART PURCHASE — All Rights Reserved
+</footer>
+
+<!-- Product Editor -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2 id="modalTitle">Add Product</h2>
+
+    <input id="pName" placeholder="Product name">
+
+    <input id="pImage" placeholder="Product image URL">
+
+    <select id="pCategory">
+      <option>Fashion</option>
+      <option>Home</option>
+      <option>Beauty</option>
+      <option>Bags</option>
+      <option>Kids</option>
+      <option>Fitness</option>
+      <option>Gifts</option>
+    </select>
+
+    <input id="pOriginal" type="number" placeholder="Original price">
+
+    <input id="pProfit" type="number" placeholder="Your markup / profit">
+
+    <select id="pMarketplace">
+      <option>Amazon</option>
+      <option>Flipkart</option>
+      <option>Meesho</option>
+    </select>
+
+    <input id="pLink" placeholder="Your affiliate/product link">
+
+    <button onclick="saveProduct()">Save Product</button>
+    <button class="close" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("smartPurchaseProducts")) || [
+  {
+    name: "Stylish Women's Handbag",
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+    category: "Bags",
+    original: 799,
+    profit: 200,
+    marketplace: "Amazon",
+    link: "https://www.amazon.in/"
+  },
+  {
+    name: "Cotton Casual Shirt",
+    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf",
+    category: "Fashion",
+    original: 599,
+    profit: 150,
+    marketplace: "Flipkart",
+    link: "https://www.flipkart.com/"
+  },
+  {
+    name: "Home Storage Organizer",
+    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7",
+    category: "Home",
+    original: 399,
+    profit: 100,
+    marketplace: "Meesho",
+    link: "https://www.meesho.com/"
+  }
+];
+
+let editIndex = null;
+let adminMode = false;
+
+function saveData() {
+  localStorage.setItem(
+    "smartPurchaseProducts",
+    JSON.stringify(products)
+  );
+}
+
+function renderProducts() {
+
+  const container = document.getElementById("products");
+
+  const search =
+    document.getElementById("search").value.toLowerCase();
+
+  const category =
+    document.getElementById("category").value;
+
+  container.innerHTML = "";
+
+  products.forEach((p, index) => {
+
+    const matchesSearch =
+      p.name.toLowerCase().includes(search);
+
+    const matchesCategory =
+      category === "all" || p.category === category;
+
+    if (!matchesSearch || !matchesCategory) return;
+
+    const sellingPrice =
+      Number(p.original) + Number(p.profit);
+
+    container.innerHTML += `
+      <div class="card">
+
+        <img src="${p.image}" alt="${p.name}">
+
+        <div class="card-content">
+
+          <div class="category">${p.category}</div>
+
+          <h3>${p.name}</h3>
+
+          <div class="price">
+            <span class="old-price">
+              ₹${Number(p.original).toLocaleString("en-IN")}
+            </span>
+
+            <span class="new-price">
+              ₹${sellingPrice.toLocaleString("en-IN")}
+            </span>
+          </div>
+
+          <div class="profit">
+            Marketplace: ${p.marketplace}
+          </div>
+
+          <button
+            class="buy"
+            onclick="buyProduct(${index})">
+            Buy on ${p.marketplace}
+          </button>
+
+          <button
+            class="edit"
+            onclick="openEdit(${index})">
+            Edit Product
+          </button>
+
+        </div>
+      </div>
+    `;
+  });
+}
+
+function buyProduct(index) {
+
+  const link = products[index].link;
+
+  if (!link || link === "#") {
+    alert("Please add the marketplace/affiliate link.");
+    return;
+  }
+
+  window.open(link, "_blank");
+}
+
+function toggleAdmin() {
+
+  adminMode = !adminMode;
+
+  document.body.classList.toggle(
+    "admin-mode",
+    adminMode
+  );
+
+  alert(
+    adminMode
+      ? "Admin mode ON"
+      : "Admin mode OFF"
+  );
+}
+
+function openAdd() {
+
+  if (!adminMode) {
+    alert("Turn on Admin Mode first.");
+    return;
+  }
+
+  editIndex = null;
+
+  document.getElementById("modalTitle").innerText =
+    "Add Product";
+
+  clearForm();
+
+  document.getElementById("modal").style.display =
+    "flex";
+}
+
+function openEdit(index) {
+
+  editIndex = index;
+
+  const p = products[index];
+
+  document.getElementById("modalTitle").innerText =
+    "Edit Product";
+
+  document.getElementById("pName").value = p.name;
+  document.getElementById("pImage").value = p.image;
+  document.getElementById("pCategory").value = p.category;
+  document.getElementById("pOriginal").value = p.original;
+  document.getElementById("pProfit").value = p.profit;
+  document.getElementById("pMarketplace").value = p.marketplace;
+  document.getElementById("pLink").value = p.link;
+
+  document.getElementById("modal").style.display =
+    "flex";
+}
+
+function saveProduct() {
+
+  const product = {
+    name: document.getElementById("pName").value,
+    image: document.getElementById("pImage").value,
+    category: document.getElementById("pCategory").value,
+    original: Number(
+      document.getElementById("pOriginal").value
+    ),
+    profit: Number(
+      document.getElementById("pProfit").value
+    ),
+    marketplace:
+      document.getElementById("pMarketplace").value,
+    link:
+      document.getElementById("pLink").value
+  };
+
+  if (!product.name || !product.link) {
+    alert("Please enter the product name and link.");
+    return;
+  }
+
+  if (editIndex === null) {
+    products.push(product);
+  } else {
+    products[editIndex] = product;
+  }
+
+  saveData();
+  closeModal();
+  renderProducts();
+}
+
+function clearForm() {
+
+  document.getElementById("pName").value = "";
+  document.getElementById("pImage").value = "";
+  document.getElementById("pOriginal").value = "";
+  document.getElementById("pProfit").value = "";
+  document.getElementById("pLink").value = "";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display =
+    "none";
+}
+
+renderProducts();
+
+</script>
+
+</body>
+</html>
