@@ -1,536 +1,1379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SMART PURCHASE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SMART PURCHASE</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 
-    body {
-      background: #f5f6fa;
-      color: #222;
-    }
+body{
+  background:#f5f7fb;
+  color:#172033;
+}
 
-    header {
-      background: linear-gradient(135deg, #111827, #2563eb);
-      color: white;
-      padding: 22px 6%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+header{
+  background:linear-gradient(135deg,#111827,#2563eb);
+  color:white;
+  padding:20px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    .logo {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+.logo{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:1px;
+}
 
-    .tagline {
-      font-size: 13px;
-      opacity: .85;
-    }
+.tagline{
+  font-size:12px;
+  opacity:.85;
+  margin-top:4px;
+}
 
-    .hero {
-      padding: 45px 6%;
-      text-align: center;
-      background: white;
-    }
+button{
+  cursor:pointer;
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  font-weight:bold;
+}
 
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
+.admin-login{
+  background:white;
+  color:#2563eb;
+}
 
-    .hero p {
-      color: #666;
-      font-size: 17px;
-    }
+.hero{
+  background:white;
+  text-align:center;
+  padding:50px 20px;
+}
 
-    .controls {
-      padding: 25px 6%;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+.hero h1{
+  font-size:42px;
+  margin-bottom:10px;
+}
 
-    input, select, button {
-      padding: 12px 15px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 15px;
-    }
+.hero p{
+  color:#667085;
+}
 
-    input {
-      min-width: 260px;
-    }
+.controls{
+  padding:25px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
 
-    button {
-      cursor: pointer;
-      border: none;
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
+.controls input,
+.controls select{
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  min-width:240px;
+}
 
-    button:hover {
-      opacity: .9;
-    }
+.admin-bar{
+  display:none;
+  background:#111827;
+  color:white;
+  padding:15px 6%;
+  text-align:center;
+}
 
-    .admin {
-      background: #111827;
-      color: white;
-      padding: 18px 6%;
-      text-align: center;
-    }
+.admin-mode .admin-bar{
+  display:block;
+}
 
-    .admin button {
-      background: #22c55e;
-    }
+.admin-bar button{
+  margin:4px;
+}
 
-    .products {
-      padding: 20px 6% 60px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
-    }
+.add{
+  background:#22c55e;
+  color:white;
+}
 
-    .card {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-      transition: .2s;
-    }
+.settings{
+  background:#2563eb;
+  color:white;
+}
 
-    .card:hover {
-      transform: translateY(-4px);
-    }
+.logout{
+  background:#dc2626;
+  color:white;
+}
 
-    .card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      background: #eee;
-    }
+.products{
+  padding:10px 6% 60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:22px;
+}
 
-    .card-content {
-      padding: 17px;
-    }
+.card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
 
-    .category {
-      color: #2563eb;
-      font-size: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  background:#eee;
+}
 
-    .card h3 {
-      margin: 8px 0;
-      font-size: 18px;
-    }
+.card-body{
+  padding:17px;
+}
 
-    .price {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin: 10px 0;
-    }
+.category{
+  color:#2563eb;
+  font-size:12px;
+  font-weight:bold;
+  text-transform:uppercase;
+}
 
-    .old-price {
-      color: #999;
-      text-decoration: line-through;
-    }
+.card h3{
+  margin:8px 0;
+}
 
-    .new-price {
-      font-size: 22px;
-      font-weight: 800;
-      color: #16a34a;
-    }
+.price{
+  margin:12px 0;
+}
 
-    .profit {
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 12px;
-    }
+.old{
+  color:#999;
+  text-decoration:line-through;
+  margin-right:8px;
+}
 
-    .buy {
-      width: 100%;
-      background: #ff6b00;
-    }
+.new{
+  color:#16a34a;
+  font-size:22px;
+  font-weight:900;
+}
 
-    .edit {
-      width: 100%;
-      background: #64748b;
-      margin-top: 7px;
-      display: none;
-    }
+.market{
+  color:#667085;
+  font-size:13px;
+  margin-bottom:12px;
+}
 
-    .admin-mode .edit {
-      display: block;
-    }
+.buy{
+  width:100%;
+  background:#ff6b00;
+  color:white;
+  margin-bottom:7px;
+}
 
-    footer {
-      background: #111827;
-      color: white;
-      text-align: center;
-      padding: 25px;
-    }
+.upi{
+  width:100%;
+  background:#16a34a;
+  color:white;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.65);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      z-index: 10;
-    }
+.edit,.delete{
+  width:100%;
+  margin-top:7px;
+  color:white;
+}
 
-    .modal-box {
-      background: white;
-      width: 100%;
-      max-width: 500px;
-      padding: 25px;
-      border-radius: 15px;
-    }
+.edit{
+  background:#475569;
+}
 
-    .modal-box h2 {
-      margin-bottom: 15px;
-    }
+.delete{
+  background:#dc2626;
+}
 
-    .modal-box input,
-    .modal-box select {
-      width: 100%;
-      margin-bottom: 10px;
-    }
+.admin-only{
+  display:none;
+}
 
-    .close {
-      background: #dc2626;
-      margin-left: 8px;
-    }
-  </style>
+.admin-mode .admin-only{
+  display:block;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  z-index:100;
+}
+
+.box{
+  background:white;
+  width:100%;
+  max-width:500px;
+  padding:25px;
+  border-radius:15px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.box h2{
+  margin-bottom:15px;
+}
+
+.box input,
+.box select{
+  width:100%;
+  padding:12px;
+  margin:6px 0 12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+.save{
+  width:100%;
+  background:#2563eb;
+  color:white;
+  margin-top:5px;
+}
+
+.cancel{
+  width:100%;
+  background:#64748b;
+  color:white;
+  margin-top:7px;
+}
+
+.qr{
+  text-align:center;
+  padding:10px;
+}
+
+.qr img{
+  max-width:230px;
+  width:100%;
+}
+
+.note{
+  color:#667085;
+  font-size:12px;
+  margin:8px 0 15px;
+}
+
+footer{
+  background:#111827;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+.hidden{
+  display:none;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div>
-    <div class="logo">SMART PURCHASE</div>
-    <div class="tagline">Smart finds. Better choices.</div>
-  </div>
+
+<div>
+  <div class="logo">SMART PURCHASE</div>
+  <div class="tagline">Smart finds. Better choices.</div>
+</div>
+
+<button class="admin-login" onclick="openLogin()">
+Admin Login
+</button>
+
 </header>
 
+
 <section class="hero">
-  <h1>Smart Purchase</h1>
-  <p>Discover useful products from trusted marketplaces.</p>
+
+<h1>SMART PURCHASE</h1>
+
+<p>
+Fashion, home, beauty, bags, gifts and useful everyday products.
+</p>
+
 </section>
 
+
 <div class="controls">
-  <input
-    type="text"
-    id="search"
-    placeholder="Search products..."
-    oninput="renderProducts()"
-  />
 
-  <select id="category" onchange="renderProducts()">
-    <option value="all">All Categories</option>
-    <option value="Fashion">Fashion</option>
-    <option value="Home">Home & Kitchen</option>
-    <option value="Beauty">Beauty</option>
-    <option value="Bags">Bags & Accessories</option>
-    <option value="Kids">Kids & Toys</option>
-    <option value="Fitness">Fitness</option>
-    <option value="Gifts">Gifts</option>
-  </select>
+<input
+id="search"
+placeholder="Search products..."
+oninput="displayProducts()"
+>
+
+<select id="category" onchange="displayProducts()">
+
+<option value="all">All Categories</option>
+<option value="Fashion">Fashion</option>
+<option value="Home">Home & Kitchen</option>
+<option value="Beauty">Beauty</option>
+<option value="Bags">Bags & Accessories</option>
+<option value="Kids">Kids & Toys</option>
+<option value="Fitness">Fitness</option>
+<option value="Gifts">Gifts</option>
+
+</select>
+
 </div>
 
-<div class="admin">
-  <span>Owner controls: </span>
-  <button onclick="toggleAdmin()">Admin Mode</button>
-  <button onclick="openAdd()">+ Add Product</button>
+
+<div class="admin-bar">
+
+<strong>ADMIN PANEL</strong>
+
+<br>
+
+<button class="add" onclick="openProductForm()">
++ Add Product
+</button>
+
+<button class="settings" onclick="openSettings()">
+⚙ Settings
+</button>
+
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
 </div>
+
 
 <section class="products" id="products"></section>
 
+
 <footer>
-  © 2026 SMART PURCHASE — All Rights Reserved
+© 2026 SMART PURCHASE
 </footer>
 
-<!-- Product Editor -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <h2 id="modalTitle">Add Product</h2>
 
-    <input id="pName" placeholder="Product name">
+<!-- LOGIN -->
 
-    <input id="pImage" placeholder="Product image URL">
+<div class="modal" id="loginModal">
 
-    <select id="pCategory">
-      <option>Fashion</option>
-      <option>Home</option>
-      <option>Beauty</option>
-      <option>Bags</option>
-      <option>Kids</option>
-      <option>Fitness</option>
-      <option>Gifts</option>
-    </select>
+<div class="box">
 
-    <input id="pOriginal" type="number" placeholder="Original price">
+<h2>Admin Login</h2>
 
-    <input id="pProfit" type="number" placeholder="Your markup / profit">
+<input
+id="loginID"
+placeholder="Admin ID"
+>
 
-    <select id="pMarketplace">
-      <option>Amazon</option>
-      <option>Flipkart</option>
-      <option>Meesho</option>
-    </select>
+<input
+id="loginPassword"
+type="password"
+placeholder="Password"
+>
 
-    <input id="pLink" placeholder="Your affiliate/product link">
+<button class="save" onclick="login()">
+Login
+</button>
 
-    <button onclick="saveProduct()">Save Product</button>
-    <button class="close" onclick="closeModal()">Cancel</button>
-  </div>
+<button class="cancel" onclick="closeLogin()">
+Cancel
+</button>
+
+<p id="loginError" style="color:red;margin-top:10px"></p>
+
 </div>
+</div>
+
+
+<!-- PRODUCT FORM -->
+
+<div class="modal" id="productModal">
+
+<div class="box">
+
+<h2 id="productTitle">Add Product</h2>
+
+<input
+id="productName"
+placeholder="Product name"
+>
+
+<input
+id="productImage"
+placeholder="Product image URL"
+>
+
+<select id="productCategory">
+
+<option>Fashion</option>
+<option>Home</option>
+<option>Beauty</option>
+<option>Bags</option>
+<option>Kids</option>
+<option>Fitness</option>
+<option>Gifts</option>
+
+</select>
+
+<label>
+Marketplace Price
+</label>
+
+<input
+id="productPrice"
+type="number"
+placeholder="Example: 500"
+>
+
+<label>
+Your Profit / Markup
+</label>
+
+<input
+id="productProfit"
+type="number"
+placeholder="Example: 100"
+>
+
+<select id="productMarketplace">
+
+<option>Amazon</option>
+<option>Flipkart</option>
+<option>Meesho</option>
+
+</select>
+
+<input
+id="productLink"
+placeholder="Affiliate / product link"
+>
+
+<button class="save" onclick="saveProduct()">
+Save Product
+</button>
+
+<button class="cancel" onclick="closeProductForm()">
+Cancel
+</button>
+
+</div>
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="modal" id="settingsModal">
+
+<div class="box">
+
+<h2>Admin Settings</h2>
+
+<h3>UPI ID</h3>
+
+<p class="note">
+Enter the UPI ID where customers should send payment.
+</p>
+
+<input
+id="upiID"
+placeholder="example@upi"
+>
+
+<h3>Change Admin Password</h3>
+
+<input
+id="newPassword"
+type="password"
+placeholder="New password"
+>
+
+<input
+id="confirmPassword"
+type="password"
+placeholder="Confirm new password"
+>
+
+<button class="save" onclick="saveSettings()">
+Save Settings
+</button>
+
+<button class="cancel" onclick="closeSettings()">
+Cancel
+</button>
+
+</div>
+</div>
+
+
+<!-- UPI PAYMENT -->
+
+<div class="modal" id="upiModal">
+
+<div class="box">
+
+<h2>Pay with UPI</h2>
+
+<p id="upiProductName"></p>
+
+<p>
+Amount:
+<strong id="upiAmount"></strong>
+</p>
+
+<div class="qr">
+<img id="qrImage" alt="UPI QR Code">
+</div>
+
+<p class="note">
+Scan the QR code using Google Pay, PhonePe, Paytm or another supported UPI app.
+</p>
+
+<p>
+UPI ID:
+<strong id="displayUPI"></strong>
+</p>
+
+<button class="cancel" onclick="closeUPI()">
+Close
+</button>
+
+</div>
+</div>
+
 
 <script>
 
-let products = JSON.parse(localStorage.getItem("smartPurchaseProducts")) || [
-  {
-    name: "Stylish Women's Handbag",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3",
-    category: "Bags",
-    original: 799,
-    profit: 200,
-    marketplace: "Amazon",
-    link: "https://www.amazon.in/"
-  },
-  {
-    name: "Cotton Casual Shirt",
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf",
-    category: "Fashion",
-    original: 599,
-    profit: 150,
-    marketplace: "Flipkart",
-    link: "https://www.flipkart.com/"
-  },
-  {
-    name: "Home Storage Organizer",
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7",
-    category: "Home",
-    original: 399,
-    profit: 100,
-    marketplace: "Meesho",
-    link: "https://www.meesho.com/"
-  }
+/* ==================================================
+   BASIC SETTINGS
+   ==================================================
+
+   Default admin ID:
+   admin
+
+   Default password:
+   admin123
+
+   CHANGE THESE VALUES IF YOU WANT.
+*/
+
+
+let settings =
+JSON.parse(
+localStorage.getItem("smartPurchaseSettings")
+) || {
+
+adminID:"admin",
+
+password:"admin123",
+
+upiID:""
+
+};
+
+
+/* ==================================================
+   PRODUCTS
+   ================================================== */
+
+let products =
+JSON.parse(
+localStorage.getItem("smartPurchaseProducts")
+) || [
+
+{
+name:"Stylish Women's Handbag",
+
+image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3",
+
+category:"Bags",
+
+price:799,
+
+profit:200,
+
+marketplace:"Amazon",
+
+link:"https://www.amazon.in/"
+},
+
+{
+name:"Cotton Casual Shirt",
+
+image:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf",
+
+category:"Fashion",
+
+price:599,
+
+profit:150,
+
+marketplace:"Flipkart",
+
+link:"https://www.flipkart.com/"
+},
+
+{
+name:"Home Storage Organizer",
+
+image:"https://images.unsplash.com/photo-1586023492125-27b2c045efd7",
+
+category:"Home",
+
+price:399,
+
+profit:100,
+
+marketplace:"Meesho",
+
+link:"https://www.meesho.com/"
+}
+
 ];
 
-let editIndex = null;
-let adminMode = false;
 
-function saveData() {
-  localStorage.setItem(
-    "smartPurchaseProducts",
-    JSON.stringify(products)
-  );
+let editingIndex=-1;
+
+
+/* ==================================================
+   STORAGE
+   ================================================== */
+
+function saveProducts(){
+
+localStorage.setItem(
+"smartPurchaseProducts",
+JSON.stringify(products)
+);
+
 }
 
-function renderProducts() {
+function saveSettingsData(){
 
-  const container = document.getElementById("products");
+localStorage.setItem(
+"smartPurchaseSettings",
+JSON.stringify(settings)
+);
 
-  const search =
-    document.getElementById("search").value.toLowerCase();
-
-  const category =
-    document.getElementById("category").value;
-
-  container.innerHTML = "";
-
-  products.forEach((p, index) => {
-
-    const matchesSearch =
-      p.name.toLowerCase().includes(search);
-
-    const matchesCategory =
-      category === "all" || p.category === category;
-
-    if (!matchesSearch || !matchesCategory) return;
-
-    const sellingPrice =
-      Number(p.original) + Number(p.profit);
-
-    container.innerHTML += `
-      <div class="card">
-
-        <img src="${p.image}" alt="${p.name}">
-
-        <div class="card-content">
-
-          <div class="category">${p.category}</div>
-
-          <h3>${p.name}</h3>
-
-          <div class="price">
-            <span class="old-price">
-              ₹${Number(p.original).toLocaleString("en-IN")}
-            </span>
-
-            <span class="new-price">
-              ₹${sellingPrice.toLocaleString("en-IN")}
-            </span>
-          </div>
-
-          <div class="profit">
-            Marketplace: ${p.marketplace}
-          </div>
-
-          <button
-            class="buy"
-            onclick="buyProduct(${index})">
-            Buy on ${p.marketplace}
-          </button>
-
-          <button
-            class="edit"
-            onclick="openEdit(${index})">
-            Edit Product
-          </button>
-
-        </div>
-      </div>
-    `;
-  });
 }
 
-function buyProduct(index) {
 
-  const link = products[index].link;
+/* ==================================================
+   DISPLAY PRODUCTS
+   ================================================== */
 
-  if (!link || link === "#") {
-    alert("Please add the marketplace/affiliate link.");
-    return;
-  }
+function displayProducts(){
 
-  window.open(link, "_blank");
+const container=
+document.getElementById("products");
+
+const search=
+document.getElementById("search")
+.value
+.toLowerCase();
+
+const category=
+document.getElementById("category")
+.value;
+
+container.innerHTML="";
+
+
+products.forEach((p,index)=>{
+
+if(
+!p.name.toLowerCase().includes(search)
+)return;
+
+if(
+category!=="all" &&
+p.category!==category
+)return;
+
+
+/*
+Customer price =
+marketplace price + your profit
+*/
+
+const customerPrice=
+Number(p.price)+Number(p.profit);
+
+
+container.innerHTML+=`
+
+<div class="card">
+
+<img
+src="${p.image}"
+alt="${p.name}"
+>
+
+<div class="card-body">
+
+<div class="category">
+${p.category}
+</div>
+
+<h3>
+${p.name}
+</h3>
+
+<div class="price">
+
+<span class="old">
+₹${Number(p.price).toLocaleString("en-IN")}
+</span>
+
+<span class="new">
+₹${customerPrice.toLocaleString("en-IN")}
+</span>
+
+</div>
+
+<div class="market">
+Marketplace: ${p.marketplace}
+</div>
+
+<button
+class="buy"
+onclick="buyProduct(${index})"
+>
+View on ${p.marketplace}
+</button>
+
+<button
+class="upi"
+onclick="payUPI(${index})"
+>
+Pay ₹${customerPrice.toLocaleString("en-IN")} by UPI
+</button>
+
+<div class="admin-only">
+
+<button
+class="edit"
+onclick="editProduct(${index})"
+>
+✏️ Edit
+</button>
+
+<button
+class="delete"
+onclick="deleteProduct(${index})"
+>
+🗑️ Delete
+</button>
+
+</div>
+
+</div>
+</div>
+
+`;
+
+});
+
 }
 
-function toggleAdmin() {
 
-  adminMode = !adminMode;
+/* ==================================================
+   MARKETPLACE LINK
+   ================================================== */
 
-  document.body.classList.toggle(
-    "admin-mode",
-    adminMode
-  );
+function buyProduct(index){
 
-  alert(
-    adminMode
-      ? "Admin mode ON"
-      : "Admin mode OFF"
-  );
+const link=products[index].link;
+
+if(!link){
+
+alert("Product link is missing.");
+
+return;
+
 }
 
-function openAdd() {
+window.open(link,"_blank");
 
-  if (!adminMode) {
-    alert("Turn on Admin Mode first.");
-    return;
-  }
-
-  editIndex = null;
-
-  document.getElementById("modalTitle").innerText =
-    "Add Product";
-
-  clearForm();
-
-  document.getElementById("modal").style.display =
-    "flex";
 }
 
-function openEdit(index) {
 
-  editIndex = index;
+/* ==================================================
+   UPI PAYMENT
+   ================================================== */
 
-  const p = products[index];
+function payUPI(index){
 
-  document.getElementById("modalTitle").innerText =
-    "Edit Product";
+if(!settings.upiID){
 
-  document.getElementById("pName").value = p.name;
-  document.getElementById("pImage").value = p.image;
-  document.getElementById("pCategory").value = p.category;
-  document.getElementById("pOriginal").value = p.original;
-  document.getElementById("pProfit").value = p.profit;
-  document.getElementById("pMarketplace").value = p.marketplace;
-  document.getElementById("pLink").value = p.link;
+alert(
+"UPI payment is not configured yet. Admin must enter a UPI ID."
+);
 
-  document.getElementById("modal").style.display =
-    "flex";
+return;
+
 }
 
-function saveProduct() {
 
-  const product = {
-    name: document.getElementById("pName").value,
-    image: document.getElementById("pImage").value,
-    category: document.getElementById("pCategory").value,
-    original: Number(
-      document.getElementById("pOriginal").value
-    ),
-    profit: Number(
-      document.getElementById("pProfit").value
-    ),
-    marketplace:
-      document.getElementById("pMarketplace").value,
-    link:
-      document.getElementById("pLink").value
-  };
+const product=products[index];
 
-  if (!product.name || !product.link) {
-    alert("Please enter the product name and link.");
-    return;
-  }
+const amount=
+Number(product.price)+
+Number(product.profit);
 
-  if (editIndex === null) {
-    products.push(product);
-  } else {
-    products[editIndex] = product;
-  }
 
-  saveData();
-  closeModal();
-  renderProducts();
+/*
+UPI payment URI.
+
+This opens a UPI payment app on supported devices.
+*/
+
+const upiURL=
+"upi://pay"+
+"?pa="+
+encodeURIComponent(settings.upiID)+
+"&pn="+
+encodeURIComponent("SMART PURCHASE")+
+"&am="+
+encodeURIComponent(amount.toFixed(2))+
+"&cu=INR";
+
+
+document.getElementById(
+"upiProductName"
+).innerText=
+product.name;
+
+
+document.getElementById(
+"upiAmount"
+).innerText=
+"₹"+amount.toLocaleString("en-IN");
+
+
+document.getElementById(
+"displayUPI"
+).innerText=
+settings.upiID;
+
+
+/*
+QR service used only to display
+the UPI payment URI.
+*/
+
+document.getElementById(
+"qrImage"
+).src=
+"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
+encodeURIComponent(upiURL);
+
+
+document.getElementById(
+"upiModal"
+).style.display="flex";
+
 }
 
-function clearForm() {
 
-  document.getElementById("pName").value = "";
-  document.getElementById("pImage").value = "";
-  document.getElementById("pOriginal").value = "";
-  document.getElementById("pProfit").value = "";
-  document.getElementById("pLink").value = "";
+/* ==================================================
+   LOGIN
+   ================================================== */
+
+function openLogin(){
+
+document.getElementById(
+"loginModal"
+).style.display="flex";
+
 }
 
-function closeModal() {
-  document.getElementById("modal").style.display =
-    "none";
+function closeLogin(){
+
+document.getElementById(
+"loginModal"
+).style.display="none";
+
 }
 
-renderProducts();
+
+function login(){
+
+const id=
+document.getElementById(
+"loginID"
+).value;
+
+const password=
+document.getElementById(
+"loginPassword"
+).value;
+
+
+if(
+id===settings.adminID &&
+password===settings.password
+){
+
+sessionStorage.setItem(
+"smartPurchaseAdmin",
+"true"
+);
+
+document.body.classList.add(
+"admin-mode"
+);
+
+closeLogin();
+
+displayProducts();
+
+}else{
+
+document.getElementById(
+"loginError"
+).innerText=
+"Incorrect Admin ID or password.";
+
+}
+
+}
+
+
+/* ==================================================
+   LOGOUT
+   ================================================== */
+
+function logout(){
+
+sessionStorage.removeItem(
+"smartPurchaseAdmin"
+);
+
+document.body.classList.remove(
+"admin-mode"
+);
+
+displayProducts();
+
+}
+
+
+/* ==================================================
+   ADMIN CHECK
+   ================================================== */
+
+function isAdmin(){
+
+return sessionStorage.getItem(
+"smartPurchaseAdmin"
+)==="true";
+
+}
+
+
+/* ==================================================
+   PRODUCT ADD
+   ================================================== */
+
+function openProductForm(){
+
+if(!isAdmin()){
+
+alert("Please login first.");
+
+return;
+
+}
+
+editingIndex=-1;
+
+document.getElementById(
+"productTitle"
+).innerText=
+"Add Product";
+
+clearProductForm();
+
+document.getElementById(
+"productModal"
+).style.display="flex";
+
+}
+
+
+/* ==================================================
+   EDIT
+   ================================================== */
+
+function editProduct(index){
+
+if(!isAdmin())return;
+
+editingIndex=index;
+
+const p=products[index];
+
+
+document.getElementById(
+"productTitle"
+).innerText=
+"Edit Product";
+
+
+document.getElementById(
+"productName"
+).value=p.name;
+
+document.getElementById(
+"productImage"
+).value=p.image;
+
+document.getElementById(
+"productCategory"
+).value=p.category;
+
+document.getElementById(
+"productPrice"
+).value=p.price;
+
+document.getElementById(
+"productProfit"
+).value=p.profit;
+
+document.getElementById(
+"productMarketplace"
+).value=p.marketplace;
+
+document.getElementById(
+"productLink"
+).value=p.link;
+
+
+document.getElementById(
+"productModal"
+).style.display="flex";
+
+}
+
+
+/* ==================================================
+   SAVE PRODUCT
+   ================================================== */
+
+function saveProduct(){
+
+if(!isAdmin())return;
+
+
+const product={
+
+name:
+document.getElementById(
+"productName"
+).value.trim(),
+
+image:
+document.getElementById(
+"productImage"
+).value.trim(),
+
+category:
+document.getElementById(
+"productCategory"
+).value,
+
+price:
+Number(
+document.getElementById(
+"productPrice"
+).value
+),
+
+profit:
+Number(
+document.getElementById(
+"productProfit"
+).value
+),
+
+marketplace:
+document.getElementById(
+"productMarketplace"
+).value,
+
+link:
+document.getElementById(
+"productLink"
+).value.trim()
+
+};
+
+
+if(!product.name){
+
+alert("Enter a product name.");
+
+return;
+
+}
+
+
+if(!product.link){
+
+alert("Enter the marketplace/affiliate link.");
+
+return;
+
+}
+
+
+if(product.price<0 || product.profit<0){
+
+alert("Price and profit cannot be negative.");
+
+return;
+
+}
+
+
+if(editingIndex===-1){
+
+products.push(product);
+
+}else{
+
+products[editingIndex]=product;
+
+}
+
+
+saveProducts();
+
+closeProductForm();
+
+displayProducts();
+
+}
+
+
+/* ==================================================
+   DELETE
+   ================================================== */
+
+function deleteProduct(index){
+
+if(!isAdmin())return;
+
+
+if(
+confirm("Delete this product?")
+){
+
+products.splice(index,1);
+
+saveProducts();
+
+displayProducts();
+
+}
+
+}
+
+
+/* ==================================================
+   CLEAR PRODUCT FORM
+   ================================================== */
+
+function clearProductForm(){
+
+document.getElementById(
+"productName"
+).value="";
+
+document.getElementById(
+"productImage"
+).value="";
+
+document.getElementById(
+"productPrice"
+).value="";
+
+document.getElementById(
+"productProfit"
+).value="";
+
+document.getElementById(
+"productLink"
+).value="";
+
+}
+
+
+/* ==================================================
+   CLOSE PRODUCT FORM
+   ================================================== */
+
+function closeProductForm(){
+
+document.getElementById(
+"productModal"
+).style.display="none";
+
+}
+
+
+/* ==================================================
+   SETTINGS
+   ================================================== */
+
+function openSettings(){
+
+if(!isAdmin()){
+
+alert("Please login first.");
+
+return;
+
+}
+
+
+document.getElementById(
+"upiID"
+).value=
+settings.upiID;
+
+
+document.getElementById(
+"newPassword"
+).value="";
+
+document.getElementById(
+"confirmPassword"
+).value="";
+
+
+document.getElementById(
+"settingsModal"
+).style.display="flex";
+
+}
+
+
+function closeSettings(){
+
+document.getElementById(
+"settingsModal"
+).style.display="none";
+
+}
+
+
+/* ==================================================
+   SAVE SETTINGS
+   ================================================== */
+
+function saveSettings(){
+
+if(!isAdmin())return;
+
+
+const upi=
+document.getElementById(
+"upiID"
+).value.trim();
+
+
+const newPassword=
+document.getElementById(
+"newPassword"
+).value;
+
+
+const confirmPassword=
+document.getElementById(
+"confirmPassword"
+).value;
+
+
+/*
+UPI is optional.
+Password only changes when entered.
+*/
+
+if(newPassword){
+
+if(newPassword.length<6){
+
+alert(
+"Password should contain at least 6 characters."
+);
+
+return;
+
+}
+
+
+if(newPassword!==confirmPassword){
+
+alert(
+"Passwords do not match."
+);
+
+return;
+
+}
+
+settings.password=newPassword;
+
+}
+
+
+settings.upiID=upi;
+
+saveSettingsData();
+
+closeSettings();
+
+alert(
+"Settings saved successfully."
+);
+
+}
+
+
+/* ==================================================
+   CLOSE UPI
+   ================================================== */
+
+function closeUPI(){
+
+document.getElementById(
+"upiModal"
+).style.display="none";
+
+}
+
+
+/* ==================================================
+   START
+   ================================================== */
+
+if(isAdmin()){
+
+document.body.classList.add(
+"admin-mode"
+);
+
+}
+
+displayProducts();
 
 </script>
 
